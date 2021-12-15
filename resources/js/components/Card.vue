@@ -9,11 +9,20 @@
    text-sm
    hover:bg-gray-100
    mb-2
+   font-semibold
   "
  >
-  xxx
+  {{ card.title }}
  </div>
 </template>
+
+<script>
+export default {
+ props: {
+  card: Object,
+ },
+};
+</script>
 
 <style scoped>
 .card {

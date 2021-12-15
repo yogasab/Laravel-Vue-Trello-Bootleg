@@ -20,12 +20,15 @@
 
   <div class="h-full flex flex-1 flex-col items-stretch">
    <div class="mx-4 mb-2 text-lg text-white font-bold">
-    The board title goes here
+    <span v-if="$apolloData.queries.board.loading">Loading ...</span>
+    <span v-else>The board title goes here</span>
    </div>
    <div class="flex flex-1 items-start overflow-x-auto mx-2">
-    <card-list></card-list>
-    <card-list></card-list>
-    <card-list></card-list>
+    <card-list
+     v-for="list in board.lists"
+     :key="list.id"
+     :list="list"
+    ></card-list>
    </div>
   </div>
  </div>
@@ -33,8 +36,37 @@
 
 <script>
 import CardList from "../components/CardList.vue";
+import gql from "graphql-tag";
 export default {
  components: { CardList },
+ apollo: {
+  board: {
+   query: gql`
+    query ($id: ID!) {
+     board(id: $id) {
+      id
+      title
+      color
+      created_at
+      lists {
+       id
+       title
+       cards {
+        id
+        title
+        order
+       }
+      }
+     }
+    }
+   `,
+   variables() {
+    return {
+     id: 1,
+    };
+   },
+  },
+ },
 };
 </script>
 
