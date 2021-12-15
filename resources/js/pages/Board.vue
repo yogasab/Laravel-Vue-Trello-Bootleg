@@ -36,30 +36,12 @@
 
 <script>
 import CardList from "../components/CardList.vue";
-import gql from "graphql-tag";
+import BoardWithListsAndCards from "../graphql/BoardWithListsAndCards.gql";
 export default {
  components: { CardList },
  apollo: {
   board: {
-   query: gql`
-    query ($id: ID!) {
-     board(id: $id) {
-      id
-      title
-      color
-      created_at
-      lists {
-       id
-       title
-       cards {
-        id
-        title
-        order
-       }
-      }
-     }
-    }
-   `,
+   query: BoardWithListsAndCards,
    variables() {
     return {
      id: 1,
