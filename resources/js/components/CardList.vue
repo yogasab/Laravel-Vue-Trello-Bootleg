@@ -1,9 +1,10 @@
 <template>
- <div class="bg-gray-300 rounded-sm p-2 mr-2 list">
+ <div class="bg-gray-300 rounded-md p-2 mr-2 list">
   <div class="flex justify-between">
    <div class="text-gray-800 pl-2 pb-2 font-bold">{{ list.title }}</div>
   </div>
   <card v-for="card in list.cards" :key="card.id" :card="card"></card>
+  <card-editor></card-editor>
   <card-add-button></card-add-button>
  </div>
 </template>
@@ -11,8 +12,9 @@
 <script>
 import Card from "./Card.vue";
 import CardAddButton from "./CardAddButton.vue";
+import CardEditor from "./CardEditor.vue";
 export default {
- components: { Card, CardAddButton },
+ components: { Card, CardAddButton, CardEditor },
  props: {
   list: Object,
  },
