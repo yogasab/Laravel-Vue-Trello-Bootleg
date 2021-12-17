@@ -4,8 +4,12 @@
    <div class="text-gray-800 pl-2 pb-2 font-bold">{{ list.title }}</div>
   </div>
   <card v-for="card in list.cards" :key="card.id" :card="card"></card>
-  <card-editor></card-editor>
-  <card-add-button></card-add-button>
+  <card-editor
+   v-if="editing"
+   @closeCardEditor="editing = false"
+   :list="list"
+  ></card-editor>
+  <card-add-button v-else @addTask="editing = true"></card-add-button>
  </div>
 </template>
 
@@ -14,6 +18,11 @@ import Card from "./Card.vue";
 import CardAddButton from "./CardAddButton.vue";
 import CardEditor from "./CardEditor.vue";
 export default {
+ data() {
+  return {
+   editing: false,
+  };
+ },
  components: { Card, CardAddButton, CardEditor },
  props: {
   list: Object,

@@ -56,6 +56,7 @@ type CardList {
     updated_at: DateTime!
     cards: [Card!]! @hasMany
     board: Board! @belongsTo
+    board_id: ID!
 }
 
 input CardAddInput {

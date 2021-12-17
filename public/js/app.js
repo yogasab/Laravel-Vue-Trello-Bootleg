@@ -5663,6 +5663,42 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    addCard: function addCard() {
+      this.$emit("addTask");
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CardEditor.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CardEditor.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _graphql_AddCard_gql__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../graphql/AddCard.gql */ "./resources/js/graphql/AddCard.gql");
 /* harmony import */ var _graphql_AddCard_gql__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_graphql_AddCard_gql__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../graphql/BoardWithListsAndCards.gql */ "./resources/js/graphql/BoardWithListsAndCards.gql");
@@ -5684,17 +5720,71 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      title: null
+    };
+  },
+  props: {
+    list: Object
+  },
+  mounted: function mounted() {
+    this.$refs.cardEditor.focus();
+  },
   methods: {
+    closeCardEditor: function closeCardEditor() {
+      this.$emit("closeCardEditor");
+    },
     addCard: function addCard() {
+      var self = this;
       this.$apollo.mutate({
         mutation: _graphql_AddCard_gql__WEBPACK_IMPORTED_MODULE_0___default.a,
         variables: {
-          title: "lorem",
-          listId: 1,
-          order: 1,
+          title: this.title,
+          listId: this.list.id,
+          order: this.list.cards.length + 1,
           ownerId: 1
         },
         update: function update(store, _ref) {
@@ -5702,11 +5792,11 @@ __webpack_require__.r(__webpack_exports__);
           var data = store.readQuery({
             query: _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default.a,
             variables: {
-              id: 1
+              id: Number(self.list.board_id)
             }
           });
           data.board.lists.find(function (list) {
-            return list.id = 1;
+            return list.id == self.list.id;
           }).cards.push(cardAdd);
           store.writeQuery({
             query: _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default.a,
@@ -5714,46 +5804,8 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       });
+      this.closeCardEditor();
     }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CardEditor.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CardEditor.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      title: null
-    };
   }
 });
 
@@ -5782,10 +5834,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      editing: false
+    };
+  },
   components: {
     Card: _Card_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     CardAddButton: _CardAddButton_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -31702,22 +31763,75 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("textarea", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.title,
+          expression: "title",
+        },
+      ],
+      ref: "cardEditor",
+      staticClass:
+        "\n   rounded-md\n   shadow-card\n   py-1\n   px-2\n   w-full\n   outline-none\n   text-gray-900 text-sm\n   bg-white\n   h-16\n   resize-none\n  ",
+      attrs: { placeholder: "Enter your task here ..." },
+      domProps: { value: _vm.title },
+      on: {
+        keyup: [
+          function ($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "esc", 27, $event.key, ["Esc", "Escape"])
+            ) {
+              return null
+            }
+            return _vm.closeCardEditor.apply(null, arguments)
+          },
+          function ($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.addCard.apply(null, arguments)
+          },
+        ],
+        input: function ($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.title = $event.target.value
+        },
+      },
+    }),
+    _vm._v(" "),
+    _c("div", { staticClass: "flex" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "\n    rounded-md\n    bg-indigo-500\n    hover:bg-indigo-700\n    text-white\n    outline-none\n    py-1\n    px-2\n    cursor-pointer\n   ",
+          on: { click: _vm.addCard },
+        },
+        [_vm._v("\n   Add Task\n  ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "\n    rounded-md\n    bg-gray-500\n    hover:bg-gray-700\n    text-white\n    ml-2\n    py-1\n    px-2\n    cursor-pointer\n   ",
+          on: { click: _vm.closeCardEditor },
+        },
+        [_vm._v("\n   Cancel\n  ")]
+      ),
+    ]),
+  ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("textarea", {
-        staticClass:
-          "\n   rounded-md\n   shadow-card\n   py-1\n   px-2\n   w-full\n   outline-none\n   text-gray-900 text-sm\n   bg-white\n   h-16\n   resize-none\n  ",
-        attrs: { placeholder: "Enter your task here ..." },
-      }),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -31753,9 +31867,22 @@ var render = function () {
         return _c("card", { key: card.id, attrs: { card: card } })
       }),
       _vm._v(" "),
-      _c("card-editor"),
-      _vm._v(" "),
-      _c("card-add-button"),
+      _vm.editing
+        ? _c("card-editor", {
+            attrs: { list: _vm.list },
+            on: {
+              closeCardEditor: function ($event) {
+                _vm.editing = false
+              },
+            },
+          })
+        : _c("card-add-button", {
+            on: {
+              addTask: function ($event) {
+                _vm.editing = true
+              },
+            },
+          }),
     ],
     2
   )
@@ -45250,8 +45377,8 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports) {
 
 
-    var doc = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BoardWithListAndCards"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"board"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"color"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"created_at"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"lists"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"cards"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"order"},"arguments":[],"directives":[]}]}}]}}]}}]}}],"loc":{"start":0,"end":300}};
-    doc.loc.source = {"body":"query BoardWithListAndCards($id: ID!) {\r\n    board(id: $id) {\r\n        id\r\n        title\r\n        color\r\n        created_at\r\n        lists {\r\n            id\r\n            title\r\n            cards {\r\n                id\r\n                title\r\n                order\r\n            }\r\n        }\r\n    }\r\n}\r\n","name":"GraphQL request","locationOffset":{"line":1,"column":1}};
+    var doc = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BoardWithListAndCards"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"board"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"color"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"created_at"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"lists"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"board_id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"cards"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"order"},"arguments":[],"directives":[]}]}}]}}]}}]}}],"loc":{"start":0,"end":322}};
+    doc.loc.source = {"body":"query BoardWithListAndCards($id: ID!) {\r\n    board(id: $id) {\r\n        id\r\n        title\r\n        color\r\n        created_at\r\n        lists {\r\n            id\r\n            title\r\n            board_id\r\n            cards {\r\n                id\r\n                title\r\n                order\r\n            }\r\n        }\r\n    }\r\n}\r\n","name":"GraphQL request","locationOffset":{"line":1,"column":1}};
   
 
     var names = {};
