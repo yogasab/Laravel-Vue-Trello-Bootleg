@@ -84,17 +84,22 @@ export default {
      ownerId: 1,
     },
     update(store, { data: { cardAdd } }) {
-     const data = store.readQuery({
-      query: BoardWithListsAndCards,
-      variables: { id: Number(self.list.board_id) },
+     //  const data = store.readQuery({
+     //   query: BoardWithListsAndCards,
+     //   variables: { id: Number(self.list.board_id) },
+     //  });
+     //  data.board.lists
+     //   .find((list) => list.id == self.list.id)
+     //   .cards.push(cardAdd);
+     //  store.writeQuery({ query: BoardWithListsAndCards, data });
+     self.$emit("added", {
+      store,
+      data: cardAdd,
      });
-     data.board.lists
-      .find((list) => list.id == self.list.id)
-      .cards.push(cardAdd);
-     store.writeQuery({ query: BoardWithListsAndCards, data });
+     self.closeCardEditor();
     },
    });
-   this.closeCardEditor();
+   //  this.closeCardEditor();
   },
  },
 };

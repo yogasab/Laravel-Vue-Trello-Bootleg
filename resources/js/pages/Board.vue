@@ -28,6 +28,7 @@
      v-for="list in board.lists"
      :key="list.id"
      :list="list"
+     @card-added="updateQueryCache($event)"
     ></card-list>
    </div>
   </div>
@@ -39,6 +40,18 @@ import CardList from "../components/CardList.vue";
 import BoardWithListsAndCards from "../graphql/BoardWithListsAndCards.gql";
 export default {
  components: { CardList },
+ methods: {
+  updateQueryCache(event) {
+   const data = event.store.readQuery({
+    query: BoardWithListsAndCards,
+    variables: { id: Number(this.board.id) },
+   });
+   data.board.lists
+    .find((list) => list.id == event.listId)
+    .cards.push(event.data);
+   event.store.writeQuery({ query: BoardWithListsAndCards, data });
+  },
+ },
  apollo: {
   board: {
    query: BoardWithListsAndCards,
