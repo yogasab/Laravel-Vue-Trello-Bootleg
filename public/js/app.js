@@ -5630,6 +5630,7 @@ function stripSymbols(data) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _graphql_DeleteCard_gql__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../graphql/DeleteCard.gql */ "./resources/js/graphql/DeleteCard.gql");
 /* harmony import */ var _graphql_DeleteCard_gql__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_graphql_DeleteCard_gql__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _contants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../contants */ "./resources/js/contants.js");
 //
 //
 //
@@ -5656,16 +5657,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     card: Object
   },
   methods: {
     deleteCard: function deleteCard() {
+      var self = this;
       this.$apollo.mutate({
         mutation: _graphql_DeleteCard_gql__WEBPACK_IMPORTED_MODULE_0___default.a,
         variables: {
           id: this.card.id
+        },
+        update: function update(store, _ref) {
+          var cardDelete = _ref.data.cardDelete;
+          self.$emit("deleted", {
+            store: store,
+            data: cardDelete,
+            type: _contants__WEBPACK_IMPORTED_MODULE_1__["EVENT_CARD_DELETED"]
+          });
         }
       });
     }
@@ -5723,6 +5734,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _graphql_AddCard_gql__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_graphql_AddCard_gql__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../graphql/BoardWithListsAndCards.gql */ "./resources/js/graphql/BoardWithListsAndCards.gql");
 /* harmony import */ var _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _contants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../contants */ "./resources/js/contants.js");
 //
 //
 //
@@ -5779,6 +5791,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5809,17 +5822,10 @@ __webpack_require__.r(__webpack_exports__);
         },
         update: function update(store, _ref) {
           var cardAdd = _ref.data.cardAdd;
-          //  const data = store.readQuery({
-          //   query: BoardWithListsAndCards,
-          //   variables: { id: Number(self.list.board_id) },
-          //  });
-          //  data.board.lists
-          //   .find((list) => list.id == self.list.id)
-          //   .cards.push(cardAdd);
-          //  store.writeQuery({ query: BoardWithListsAndCards, data });
           self.$emit("added", {
             store: store,
-            data: cardAdd
+            data: cardAdd,
+            type: _contants__WEBPACK_IMPORTED_MODULE_2__["EVENT_CARD_ADDED"]
           });
           self.closeCardEditor();
         }
@@ -5842,6 +5848,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Card_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Card.vue */ "./resources/js/components/Card.vue");
 /* harmony import */ var _CardAddButton_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CardAddButton.vue */ "./resources/js/components/CardAddButton.vue");
 /* harmony import */ var _CardEditor_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CardEditor.vue */ "./resources/js/components/CardEditor.vue");
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5889,8 +5900,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_CardList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/CardList.vue */ "./resources/js/components/CardList.vue");
-/* harmony import */ var _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../graphql/BoardWithListsAndCards.gql */ "./resources/js/graphql/BoardWithListsAndCards.gql");
-/* harmony import */ var _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _contants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../contants */ "./resources/js/contants.js");
+/* harmony import */ var _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../graphql/BoardWithListsAndCards.gql */ "./resources/js/graphql/BoardWithListsAndCards.gql");
+/* harmony import */ var _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
@@ -5928,6 +5940,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5937,23 +5951,39 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     updateQueryCache: function updateQueryCache(event) {
       var data = event.store.readQuery({
-        query: _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default.a,
+        query: _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2___default.a,
         variables: {
           id: Number(this.board.id)
         }
       });
-      data.board.lists.find(function (list) {
-        return list.id == event.listId;
-      }).cards.push(event.data);
+
+      var listById = function listById() {
+        return data.board.lists.find(function (list) {
+          return list.id == event.listId;
+        });
+      };
+
+      switch (event.type) {
+        case _contants__WEBPACK_IMPORTED_MODULE_1__["EVENT_CARD_ADDED"]:
+          listById().cards.push(event.data);
+          break;
+
+        case _contants__WEBPACK_IMPORTED_MODULE_1__["EVENT_CARD_DELETED"]:
+          listById().cards = listById().cards.filter(function (card) {
+            return card.id != event.data.id;
+          });
+          break;
+      }
+
       event.store.writeQuery({
-        query: _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default.a,
+        query: _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2___default.a,
         data: data
       });
     }
   },
   apollo: {
     board: {
-      query: _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default.a,
+      query: _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_2___default.a,
       variables: function variables() {
         return {
           id: 1
@@ -31928,7 +31958,18 @@ var render = function () {
       ]),
       _vm._v(" "),
       _vm._l(_vm.list.cards, function (card) {
-        return _c("card", { key: card.id, attrs: { card: card } })
+        return _c("card", {
+          key: card.id,
+          attrs: { card: card },
+          on: {
+            deleted: function ($event) {
+              return _vm.$emit(
+                "card-deleted",
+                Object.assign({}, $event, { listId: _vm.list.id })
+              )
+            },
+          },
+        })
       }),
       _vm._v(" "),
       _vm.editing
@@ -32001,6 +32042,9 @@ var render = function () {
               attrs: { list: list },
               on: {
                 "card-added": function ($event) {
+                  return _vm.updateQueryCache($event)
+                },
+                "card-deleted": function ($event) {
                   return _vm.updateQueryCache($event)
                 },
               },
@@ -45311,6 +45355,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CardList_vue_vue_type_template_id_f3edd38e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/contants.js":
+/*!**********************************!*\
+  !*** ./resources/js/contants.js ***!
+  \**********************************/
+/*! exports provided: EVENT_CARD_ADDED, EVENT_CARD_DELETED */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EVENT_CARD_ADDED", function() { return EVENT_CARD_ADDED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EVENT_CARD_DELETED", function() { return EVENT_CARD_DELETED; });
+var EVENT_CARD_ADDED = "EVENT_CARD_ADDED";
+var EVENT_CARD_DELETED = "EVENT_CARD_DELETED";
 
 /***/ }),
 

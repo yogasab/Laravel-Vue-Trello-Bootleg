@@ -57,6 +57,7 @@
 <script>
 import AddCard from "../graphql/AddCard.gql";
 import BoardWithListsAndCards from "../graphql/BoardWithListsAndCards.gql";
+import { EVENT_CARD_ADDED } from "../contants";
 export default {
  data() {
   return {
@@ -84,17 +85,10 @@ export default {
      ownerId: 1,
     },
     update(store, { data: { cardAdd } }) {
-     //  const data = store.readQuery({
-     //   query: BoardWithListsAndCards,
-     //   variables: { id: Number(self.list.board_id) },
-     //  });
-     //  data.board.lists
-     //   .find((list) => list.id == self.list.id)
-     //   .cards.push(cardAdd);
-     //  store.writeQuery({ query: BoardWithListsAndCards, data });
      self.$emit("added", {
       store,
       data: cardAdd,
+      type: EVENT_CARD_ADDED,
      });
      self.closeCardEditor();
     },
