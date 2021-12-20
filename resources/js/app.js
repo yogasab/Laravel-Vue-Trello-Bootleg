@@ -3,6 +3,7 @@ import Vue from "vue";
 import Board from "./pages/Board.vue";
 import ApolloClient from "apollo-boost";
 import VueApollo from "vue-apollo";
+import router from "../js/routes/router";
 
 window.Vue = Vue;
 
@@ -20,4 +21,5 @@ const apolloProvider = new VueApollo({
 const app = new Vue({
     el: "#app",
     apolloProvider,
+    router,
 });
