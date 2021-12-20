@@ -9,12 +9,12 @@
    :card="card"
    @deleted="$emit('card-deleted', { ...$event, listId: list.id })"
   ></card>
-  <card-editor
+  <card-add-editor
    v-if="editing"
    @closeCardEditor="editing = false"
    :list="list"
    @added="$emit('card-added', { ...$event, listId: list.id })"
-  ></card-editor>
+  ></card-add-editor>
   <card-add-button v-else @addTask="editing = true"></card-add-button>
  </div>
 </template>
@@ -22,14 +22,14 @@
 <script>
 import Card from "./Card.vue";
 import CardAddButton from "./CardAddButton.vue";
-import CardEditor from "./CardEditor.vue";
+import CardAddEditor from "./CardAddEditor.vue";
 export default {
  data() {
   return {
    editing: false,
   };
  },
- components: { Card, CardAddButton, CardEditor },
+ components: { Card, CardAddButton, CardAddEditor },
  props: {
   list: Object,
  },

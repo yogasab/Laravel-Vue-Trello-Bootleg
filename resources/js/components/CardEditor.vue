@@ -15,9 +15,10 @@
    "
    placeholder="Enter your task here ..."
    ref="cardEditor"
+   :value="value"
    @keyup.esc="closeCardEditor"
-   @keyup.enter="addCard"
-   v-model="title"
+   @keyup.enter="saved"
+   @input="$emit('input', $event.target.value)"
   ></textarea>
   <div class="flex">
    <div
@@ -31,7 +32,7 @@
      px-2
      cursor-pointer
     "
-    @click="addCard"
+    @click="saved"
    >
     Add Task
    </div>
@@ -55,45 +56,20 @@
 </template>
 
 <script>
-import AddCard from "../graphql/AddCard.gql";
-import BoardWithListsAndCards from "../graphql/BoardWithListsAndCards.gql";
-import { EVENT_CARD_ADDED } from "../contants";
 export default {
  data() {
-  return {
-   title: null,
-  };
+  return {};
  },
- props: {
-  list: Object,
- },
+ props: ["value"],
  mounted() {
   this.$refs.cardEditor.focus();
  },
  methods: {
   closeCardEditor() {
-   this.$emit("closeCardEditor");
+   this.$emit("closed");
   },
-  addCard() {
-   const self = this;
-   this.$apollo.mutate({
-    mutation: AddCard,
-    variables: {
-     title: this.title,
-     listId: this.list.id,
-     order: this.list.cards.length + 1,
-     ownerId: 1,
-    },
-    update(store, { data: { cardAdd } }) {
-     self.$emit("added", {
-      store,
-      data: cardAdd,
-      type: EVENT_CARD_ADDED,
-     });
-     self.closeCardEditor();
-    },
-   });
-   //  this.closeCardEditor();
+  saved() {
+   this.$emit("saved");
   },
  },
 };
