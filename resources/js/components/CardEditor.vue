@@ -34,7 +34,7 @@
     "
     @click="saved"
    >
-    Add Task
+    {{ label }}
    </div>
    <div
     class="
@@ -60,7 +60,7 @@ export default {
  data() {
   return {};
  },
- props: ["value"],
+ props: ["value", "label"],
  mounted() {
   this.$refs.cardEditor.focus();
  },

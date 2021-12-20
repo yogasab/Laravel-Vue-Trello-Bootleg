@@ -3,6 +3,7 @@
   v-model="title"
   @closed="closeCardEditor"
   @saved="addCard"
+  label="Save card"
  ></card-editor>
 </template>
 
