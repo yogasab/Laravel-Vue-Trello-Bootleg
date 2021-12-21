@@ -69,7 +69,14 @@
      </div>
     </form>
     <div class="bg-gray-400 h-px w-full mb-6"></div>
-    <div class="text-center text-sm font-bold">Sign up for an account</div>
+    <div class="text-center text-sm font-bold">
+     <router-link
+      :to="{ name: 'register' }"
+      class="text-blue-700 hover:text-blue-500"
+      >Sign up</router-link
+     >
+     for new account
+    </div>
    </div>
   </div>
  </div>
