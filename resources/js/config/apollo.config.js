@@ -11,6 +11,7 @@ const apolloClient = new ApolloClient({
             .content,
     },
     credentials: "include",
+    onError: (err) => console.log("A global error"),
 });
 export default new VueApollo({
     defaultClient: apolloClient,
