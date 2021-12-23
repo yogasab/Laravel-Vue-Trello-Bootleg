@@ -9,7 +9,7 @@
     <div class="w-full text-center text-gray-600 font-bold mb-8">
      Create your account here
     </div>
-    <form>
+    <form @submit.prevent="submitForm">
      <div class="w-full mb-4">
       <input
        type="text"
@@ -28,6 +28,7 @@
        placeholder="Enter full name"
        name="name"
        autofocus
+       v-model="form.name"
       />
      </div>
      <div class="w-full mb-4">
@@ -47,6 +48,7 @@
        "
        placeholder="Enter email"
        name="email"
+       v-model="form.email"
       />
      </div>
      <div class="w-full mb-4">
@@ -65,6 +67,7 @@
         text-sm
        "
        placeholder="Enter password"
+       v-model="form.password"
       />
      </div>
      <div class="w-full mb-6">
@@ -102,6 +105,39 @@
   </div>
  </div>
 </template>
+
+<script>
+import Register from "../../graphql/Register.gql";
+export default {
+ data() {
+  return {
+   form: {
+    name: null,
+    email: null,
+    password: null,
+   },
+   errors: {},
+  };
+ },
+ methods: {
+  async submitForm() {
+   try {
+    await this.$apollo.mutate({
+     mutation: Register,
+     variables: {
+      name: this.form.name,
+      email: this.form.email,
+      password: this.form.password,
+     },
+    });
+    this.$router.push({ name: "board" });
+   } catch (error) {
+    console.log(error);
+   }
+  },
+ },
+};
+</script>
 
 <style scoped>
 .container {
