@@ -9,21 +9,7 @@
     <div class="w-full text-center text-gray-600 font-bold mb-8 text-lg">
      Log in to Laravello
     </div>
-    <div
-     class="
-      bg-red-500
-      text-gray-100 text-sm text-bold
-      mb-6
-      p-2
-      text-center
-      rounded-md
-     "
-     v-if="errors.length"
-    >
-     <div v-for="(error, index) in errors" :key="index">
-      {{ error.message }}
-     </div>
-    </div>
+    <error :errors="errors"></error>
     <form @submit.prevent="authenticate">
      <div class="w-full mb-4">
       <input
@@ -100,6 +86,7 @@
 </template>
 
 <script>
+import Error from "../../components/Error.vue";
 import Authenticate from "../../graphql/Login.gql";
 import { gqlErrors } from "../../utils/utils";
 export default {
@@ -122,10 +109,13 @@ export default {
      },
     });
    } catch (err) {
-    console.log(gqlErrors(err));
+    // console.log(gqlErrors(err));
     this.errors = gqlErrors(err);
    }
   },
+ },
+ components: {
+  Error,
  },
 };
 </script>

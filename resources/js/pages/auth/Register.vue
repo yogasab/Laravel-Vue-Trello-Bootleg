@@ -9,6 +9,7 @@
     <div class="w-full text-center text-gray-600 font-bold mb-8">
      Create your account here
     </div>
+    <error :errors="errors"></error>
     <form @submit.prevent="submitForm">
      <div class="w-full mb-4">
       <input
@@ -107,7 +108,10 @@
 </template>
 
 <script>
+import Error from "../../components/Error.vue";
 import Register from "../../graphql/Register.gql";
+import { gqlErrors } from "../../utils/utils";
+
 export default {
  data() {
   return {
@@ -116,7 +120,7 @@ export default {
     email: null,
     password: null,
    },
-   errors: {},
+   errors: [],
   };
  },
  methods: {
@@ -131,10 +135,13 @@ export default {
      },
     });
     this.$router.push({ name: "board" });
-   } catch (error) {
-    console.log(error);
+   } catch (err) {
+    this.errors = gqlErrors(err);
    }
   },
+ },
+ components: {
+  Error,
  },
 };
 </script>
