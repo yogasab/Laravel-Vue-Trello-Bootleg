@@ -34,7 +34,7 @@
      </div>
      <div class="w-full mb-4">
       <input
-       type="email"
+       type="text"
        class="
         rounded-sm
         px-4

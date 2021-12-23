@@ -33824,7 +33824,7 @@ var render = function () {
                       staticClass:
                         "\n       rounded-sm\n       px-4\n       py-2\n       outline-none\n       focus:outline-none\n       border-gray-400\n       bg-gray-100\n       border-solid border-2\n       w-full\n       text-sm\n      ",
                       attrs: {
-                        type: "email",
+                        type: "text",
                         placeholder: "Enter email",
                         name: "email",
                       },
@@ -51508,7 +51508,24 @@ function gqlErrors(err) {
   };
 
   return replaceInternal(((err === null || err === void 0 ? void 0 : err.graphQLErrors) || []).map(function (error) {
-    var _error$path;
+    var _error$extensions, _error$path;
+
+    if ("validation" === ((_error$extensions = error.extensions) === null || _error$extensions === void 0 ? void 0 : _error$extensions.category)) {
+      var _error$extensions2;
+
+      var validationErr = ((_error$extensions2 = error.extensions) === null || _error$extensions2 === void 0 ? void 0 : _error$extensions2.validation) || {};
+      Object.keys(validationErr).map(function (key) {
+        return validationErr[key];
+      });
+      return Object.keys(validationErr).map(function (key) {
+        return validationErr[key];
+      }).flat().map(function (v) {
+        return {
+          message: v,
+          internal: false
+        };
+      });
+    }
 
     return {
       message: error.message,
@@ -51516,7 +51533,7 @@ function gqlErrors(err) {
     };
   }), {
     message: "Something bad happens"
-  });
+  }).flat();
 }
 
 /***/ }),
