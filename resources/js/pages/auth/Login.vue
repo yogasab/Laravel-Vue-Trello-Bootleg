@@ -9,7 +9,7 @@
     <div class="w-full text-center text-gray-600 font-bold mb-8">
      Log in to Laravello
     </div>
-    <form>
+    <form @submit.prevent="authenticate">
      <div class="w-full mb-4">
       <input
        type="text"
@@ -26,6 +26,7 @@
         text-sm
        "
        placeholder="Enter email"
+       v-model="email"
       />
      </div>
      <div class="w-full mb-4">
@@ -44,6 +45,7 @@
         text-sm
        "
        placeholder="Enter password"
+       v-model="password"
       />
      </div>
      <div class="w-full mb-6">
@@ -81,6 +83,29 @@
   </div>
  </div>
 </template>
+
+<script>
+import Authenticate from "../../graphql/Login.gql";
+export default {
+ data() {
+  return {
+   email: null,
+   password: null,
+  };
+ },
+ methods: {
+  authenticate() {
+   this.$apollo.mutate({
+    mutation: Authenticate,
+    variables: {
+     email: this.email,
+     password: this.password,
+    },
+   });
+  },
+ },
+};
+</script>
 
 <style scoped>
 .container {
