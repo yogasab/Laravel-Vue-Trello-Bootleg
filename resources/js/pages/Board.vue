@@ -15,7 +15,9 @@
    <div class="text-lg font-bold opacity-100 cursor-pointer hover:opacity-75">
     Laravello
    </div>
-   <div class="mr-2 w-1/3 flex justify-end">X</div>
+   <div class="mr-2 w-1/3 flex justify-end">
+    {{ isLoggedIn ? "Logged In" : "Login" }}
+   </div>
   </div>
 
   <div class="h-full flex flex-1 flex-col items-stretch">
@@ -82,6 +84,11 @@ export default {
      id: 1,
     };
    },
+  },
+ },
+ computed: {
+  isLoggedIn() {
+   return this.$store.state.isLoggedIn;
   },
  },
 };
