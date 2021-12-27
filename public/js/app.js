@@ -6085,6 +6085,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -6290,7 +6306,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 4:
-                _this.$store.commit("setLoggedIn", true);
+                // this.$store.commit("setLoggedIn", true);
+                _this.$store.dispatch("setLoggedIn", true);
 
                 _this.$router.push({
                   name: "board"
@@ -6486,24 +6503,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 3:
+                _this.$store.dispatch("setLoggedIn", true);
+
                 _this.$router.push({
                   name: "board"
                 });
 
-                _context.next = 9;
+                _context.next = 10;
                 break;
 
-              case 6:
-                _context.prev = 6;
+              case 7:
+                _context.prev = 7;
                 _context.t0 = _context["catch"](0);
                 _this.errors = Object(_utils_utils__WEBPACK_IMPORTED_MODULE_3__["gqlErrors"])(_context.t0);
 
-              case 9:
+              case 10:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 6]]);
+        }, _callee, null, [[0, 7]]);
       }))();
     }
   },
@@ -33523,9 +33542,37 @@ var render = function () {
           ),
           _vm._v(" "),
           _c("div", { staticClass: "mr-2 w-1/3 flex justify-end" }, [
-            _vm._v(
-              "\n   " + _vm._s(_vm.isLoggedIn ? "Logged In" : "Login") + "\n  "
-            ),
+            _vm.isLoggedIn
+              ? _c("div", [
+                  _c("div", { staticClass: "header-btn" }, [_vm._v("Logout")]),
+                ])
+              : _c("div", { staticClass: "flex flex-row" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "header-btn cursor-pointer mr-3",
+                      on: {
+                        click: function ($event) {
+                          return _vm.$router.push({ name: "login" })
+                        },
+                      },
+                    },
+                    [_vm._v("\n     Login\n    ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "header-btn cursor-pointer",
+                      on: {
+                        click: function ($event) {
+                          return _vm.$router.push({ name: "register" })
+                        },
+                      },
+                    },
+                    [_vm._v("\n     Register\n    ")]
+                  ),
+                ]),
           ]),
         ]
       ),
@@ -51187,7 +51234,10 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
   el: "#app",
   apolloProvider: apolloProvider,
   router: _js_routes_router__WEBPACK_IMPORTED_MODULE_5__["default"],
-  store: _js_config_vuex_config__WEBPACK_IMPORTED_MODULE_6__["default"]
+  store: _js_config_vuex_config__WEBPACK_IMPORTED_MODULE_6__["default"],
+  beforeCreate: function beforeCreate() {
+    _js_config_vuex_config__WEBPACK_IMPORTED_MODULE_6__["default"].dispatch("setLoggedIn", localStorage.getItem("isLoggedIn") === "true");
+  }
 });
 
 /***/ }),
@@ -51664,7 +51714,14 @@ var store = {
       state.isLoggedIn = Boolean(action);
     }
   },
-  actions: {}
+  actions: {
+    setLoggedIn: function setLoggedIn(_ref, payload) {
+      var commit = _ref.commit;
+      var isLoggedIn = Boolean(payload);
+      localStorage.setItem("isLoggedIn", isLoggedIn);
+      commit("setLoggedIn", isLoggedIn);
+    }
+  }
 };
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store(store));
 

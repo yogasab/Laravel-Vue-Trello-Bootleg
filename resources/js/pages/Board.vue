@@ -16,7 +16,23 @@
     Laravello
    </div>
    <div class="mr-2 w-1/3 flex justify-end">
-    {{ isLoggedIn ? "Logged In" : "Login" }}
+    <div v-if="isLoggedIn">
+     <div class="header-btn">Logout</div>
+    </div>
+    <div v-else class="flex flex-row">
+     <div
+      class="header-btn cursor-pointer mr-3"
+      @click="$router.push({ name: 'login' })"
+     >
+      Login
+     </div>
+     <div
+      class="header-btn cursor-pointer"
+      @click="$router.push({ name: 'register' })"
+     >
+      Register
+     </div>
+    </div>
    </div>
   </div>
 
